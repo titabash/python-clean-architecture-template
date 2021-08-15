@@ -1,3 +1,9 @@
 Flask
 requests
 PyYAML
+pymongo
+numpy
+scipy
+pandas
+scikit-learn
+dataset

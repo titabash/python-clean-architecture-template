@@ -4,6 +4,13 @@ import yaml
 import sys
 
 sys.path.append('./')
+"""
+Write your module
+Ex. import hoge
+"""
+from logger.logging import log, get_logger  # noqa: E402
+
+logger = get_logger()
 
 
 # Load Env
@@ -24,11 +31,12 @@ main_module = Blueprint("main", __name__)
 
 
 @main_module.route("/", methods=["GET", "POST"])
+@log(logger)
 def hello_web():
     text = f'Hello API from {os.environ["ENV"]} using Python {sys.version} !, {request.args.get("test")}, {request.get_data()}'
-    print(text)
-    print(request.args.get("test"))  # Query Param
-    print(request.get_data())  # Request Body
+    logger.info(text)
+    logger.info(request.args.get("test"))  # Query Param
+    logger.info(request.get_data())  # Request Body
     return text
 
 
