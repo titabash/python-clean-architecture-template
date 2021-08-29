@@ -3,7 +3,7 @@ import os
 import yaml
 import sys
 
-sys.path.append('./')
+sys.path.append(os.path.dirname(__file__))
 """
 Write your module
 Ex. import hoge
@@ -37,7 +37,7 @@ def hello_web():
     logger.info(text)
     logger.info(request.args.get("test"))  # Query Param
     logger.info(request.get_data())  # Request Body
-    return text
+    return "Hello, Python Api!"
 
 
 port = int(os.environ.get('PORT', 8000))
