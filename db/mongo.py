@@ -4,15 +4,15 @@ import os
 
 class Mongo(object):
 
-    def __init__(self, dbName, collectionName, user='root', pwd='pass'):
-        if os.environ["ENV"] == 'local':
-            self.client = MongoClient('localhost', 27017)
-        elif os.environ["ENV"] == 'stg':
-            self.client = MongoClient('staging.com', 27017)
-        elif os.environ["ENV"] == 'prod':
-            self.client = MongoClient('production.com', 27017)
+    def __init__(self, dbName, collectionName, user='root', pwd='pass', port=27017):
+        if os.environ['ENV'] == 'local':
+            self.client = MongoClient('mongo_db', port)
+        elif os.environ['ENV'] == 'stg':
+            self.client = MongoClient('staging.com', port)
+        elif os.environ['ENV'] == 'prod':
+            self.client = MongoClient('production.com', port)
         else:  # dev
-            self.client = MongoClient('development.com', 27017)
+            self.client = MongoClient('development.com', port)
 
         self.client[dbName].authenticate(user, pwd)
         self.db = self.client[dbName]  # DB名を設定
@@ -50,3 +50,29 @@ class Mongo(object):
 
     def find_one_and_delete(self, filter):
         return self.collection.find_one_delete(filter)
+
+
+if __name__ == '__main__':
+    mongo = Mongo(dbName='test', collectionName='testCollections',
+                  user='testUser', pwd='password')
+
+    print('--------------------Register--------------------')
+    result = mongo.insert_one({'name': 'Mike', 'salary': 400000})
+    print(type(result))
+    print(result)
+    print(result.inserted_id)
+
+    print('--------------------Check--------------------')
+    find = mongo.find()
+    for doc in find:
+        print(doc)
+
+    print('--------------------Delete--------------------')
+    result = mongo.delete_one({'name': '加藤'})
+    print(type(result))
+    print(result)
+
+    print('--------------------Check--------------------')
+    find = mongo.find()
+    for doc in find:
+        print(doc)
