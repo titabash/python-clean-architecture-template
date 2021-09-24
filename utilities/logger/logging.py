@@ -6,7 +6,6 @@ from functools import wraps
 class CustomFilter(logging.Filter):
 
     def filter(self, record):
-
         record.real_filename = getattr(record,
                                        'real_filename',
                                        record.filename)
@@ -20,8 +19,8 @@ class CustomFilter(logging.Filter):
 
 
 def get_logger():
-    log_format = '[%(asctime)s] %(levelname)s\t%(real_filename)s' \
-                 ' - %(real_funcName)s:%(real_lineno)s -> %(message)s'
+    log_format = '[%(asctime)s] %(levelname)s\t%(filename)s' \
+                 ' - %(funcName)s:%(lineno)s -> %(message)s'
     logging.basicConfig(format=log_format, level=logging.INFO)
     logger = logging.getLogger(__name__)
     logger.addFilter(CustomFilter())
@@ -39,7 +38,7 @@ def log(logger):
             func_name = func.__name__
             # loggerで使用するためにfuncに関する情報をdict化
             extra = {
-                'real_filename': inspect.getfile(func),
+                'real_filename': inspect.getfile(func) if inspect.getfile(func) is not None else "Flask",
                 'real_funcName': func_name,
                 'real_lineno': inspect.currentframe().f_back.f_lineno
             }

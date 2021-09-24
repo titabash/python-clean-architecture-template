@@ -1,19 +1,15 @@
 from pymongo import MongoClient
 import os
 
+from infrastructure.interface.idatabase import IDatabase
 
-class Mongo(object):
 
-    def __init__(self, dbName, collectionName, user='root', pwd='pass', port=27017):
-        if os.environ['ENV'] == 'local':
-            self.client = MongoClient('mongo_db', port)
-        elif os.environ['ENV'] == 'stg':
-            self.client = MongoClient('staging.com', port)
-        elif os.environ['ENV'] == 'prod':
-            self.client = MongoClient('production.com', port)
-        else:  # dev
-            self.client = MongoClient('development.com', port)
+class Mongo(IDatabase):
 
+    def __init__(self, dbName, collectionName, user=None, pwd=None, port=27017):
+        self.client = MongoClient(os.environ['MONGO_ENDPOINT'], port)
+        user = user if user is not None else os.environ["MONGO_USER"]
+        pwd = pwd if pwd is not None else os.environ["MONGO_PASS"]
         self.client[dbName].authenticate(user, pwd)
         self.db = self.client[dbName]  # DB名を設定
         self.collection = self.db.get_collection(collectionName)
@@ -24,25 +20,25 @@ class Mongo(object):
     def find(self, projection=None, filter=None, sort=None):
         return self.collection.find(projection=projection, filter=filter, sort=sort)
 
-    def insert_one(self, document):
+    def insert(self, document):
         return self.collection.insert_one(document)
 
     def insert_many(self, documents):
         return self.collection.insert_many(documents)
 
-    def update_one(self, filter, update):
-        return self.collection.update_one(filter, update)
+    def update(self, filter, document):
+        return self.collection.update_one(filter, document)
 
-    def update_many(self, filter, update):
-        return self.collection.update_many(filter, update)
+    def update_many(self, filter, documents):
+        return self.collection.update_many(filter, documents)
 
-    def replace_one(self, filter, replacement):
-        return self.collection.replace_one(filter, replacement)
+    def replace_one(self, filter, document):
+        return self.collection.replace_one(filter, document)
 
-    def find_one_and_replace(self, filter, replacement):
-        return self.collection.find_one_and_replace(filter, replacement)
+    def find_one_and_replace(self, filter, documents):
+        return self.collection.find_one_and_replace(filter, documents)
 
-    def delete_one(self, filter):
+    def delete(self, filter):
         return self.collection.delete_one(filter)
 
     def delete_many(self, filter):
@@ -53,11 +49,10 @@ class Mongo(object):
 
 
 if __name__ == '__main__':
-    mongo = Mongo(dbName='test', collectionName='testCollections',
-                  user='testUser', pwd='password')
+    mongo = Mongo(dbName='test', collectionName='testCollections')
 
     print('--------------------Register--------------------')
-    result = mongo.insert_one({'name': 'Mike', 'salary': 400000})
+    result = mongo.insert({'name': 'Mike', 'salary': 400000})
     print(type(result))
     print(result)
     print(result.inserted_id)
@@ -68,7 +63,7 @@ if __name__ == '__main__':
         print(doc)
 
     print('--------------------Delete--------------------')
-    result = mongo.delete_one({'name': '加藤'})
+    result = mongo.delete({'name': 'Mike'})
     print(type(result))
     print(result)
 
