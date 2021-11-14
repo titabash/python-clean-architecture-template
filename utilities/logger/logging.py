@@ -1,5 +1,6 @@
 import inspect
 import logging
+import datetime
 from functools import wraps
 
 
@@ -21,7 +22,9 @@ class CustomFilter(logging.Filter):
 def get_logger():
     log_format = '[%(asctime)s] %(levelname)s\t%(filename)s' \
                  ' - %(funcName)s:%(lineno)s -> %(message)s'
-    logging.basicConfig(format=log_format, level=logging.INFO)
+    d_today = datetime.date.today()
+    logging.basicConfig(format=log_format, level=logging.INFO,
+                        filename=f'./log/logging_{d_today}.log')
     logger = logging.getLogger(__name__)
     logger.addFilter(CustomFilter())
     return logger
