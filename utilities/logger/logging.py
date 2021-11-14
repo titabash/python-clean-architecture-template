@@ -1,6 +1,7 @@
 import inspect
 import logging
 import datetime
+import os
 from functools import wraps
 
 
@@ -24,7 +25,7 @@ def get_logger():
                  ' - %(funcName)s:%(lineno)s -> %(message)s'
     d_today = datetime.date.today()
     logging.basicConfig(format=log_format, level=logging.INFO,
-                        filename=f'./log/logging_{d_today}.log')
+                        filename=f'./log/logging_{os.environ["ENV"]}_{d_today}.log')
     logger = logging.getLogger(__name__)
     logger.addFilter(CustomFilter())
     return logger
