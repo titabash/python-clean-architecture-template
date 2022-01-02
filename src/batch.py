@@ -12,7 +12,7 @@ logger = get_logger()
 
 
 @log(logger)
-def mainCmd(event={'default': 'value'}):
+def main_cmd(event={'default': 'value'}):
     result = hello_controller.main_batch_controller(event)
     logger.info(result)
     return result
@@ -25,7 +25,7 @@ def main(arg):
     debug on local
     """
     arg = json.loads(arg)
-    mainCmd(arg)
+    main_cmd(arg)
 
 
 if __name__ == "__main__":
