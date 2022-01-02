@@ -18,3 +18,14 @@ def main_api_controller():
         logger.error(e)
         return e
     return text
+
+
+def main_batch_controller():
+    try:
+        hello = Hello()
+        text = hello.hello()
+        logger.info(text)
+    except Exception as e:
+        logger.error(e)
+        return e
+    return text
