@@ -1,10 +1,8 @@
 from pymongo import MongoClient
 import os
 
-from infrastructure.interface.idatabase import IDatabase
 
-
-class Mongo(IDatabase):
+class Mongo():
 
     def __init__(self, dbName, collectionName, user=None, pwd=None, port=27017):
         self.client = MongoClient(os.environ['MONGO_ENDPOINT'], port)

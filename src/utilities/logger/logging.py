@@ -25,7 +25,7 @@ def get_logger():
                  ' - %(funcName)s:%(lineno)s -> %(message)s'
     d_today = datetime.date.today()
     logging.basicConfig(format=log_format, level=logging.INFO,
-                        filename=f'{os.path.dirname(os.path.realpath(__file__))}/../../log/logging_{os.environ["ENV"]}_{d_today}.log')
+                        filename=f'{os.path.dirname(os.path.realpath(__file__))}/../../log/logging_{os.environ["MACHINE_ENV"]}_{d_today}.log')
     logger = logging.getLogger(__name__)
     logger.addFilter(CustomFilter())
     return logger

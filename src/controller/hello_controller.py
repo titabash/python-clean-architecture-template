@@ -13,7 +13,7 @@ def main_api_controller():
     try:
         hello = Hello()
         text = hello.hello()
-        logger.info(text)
+        print(text)
     except Exception as e:
         logger.error(e)
         return e
@@ -24,7 +24,7 @@ def main_batch_controller():
     try:
         hello = Hello()
         text = hello.hello()
-        logger.info(text)
+        print(text)
     except Exception as e:
         logger.error(e)
         return e

@@ -1,12 +1,11 @@
 import dataset
 import os
-from infrastructure.interface.idatabase import IDatabase
 from utilities.logger.logging import log, get_logger
 
 logger = get_logger()
 
 
-class SQL(IDatabase):
+class SQL():
 
     @log(logger)
     def __init__(self, dbName, tblName, user=None, pwd=None, dbType='postgresql', port=5432):
