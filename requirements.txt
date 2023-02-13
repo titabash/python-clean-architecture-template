@@ -8,3 +8,6 @@ pandas
 scikit-learn
 dataset
 psycopg2
+sqlalchemy
+autopep8
+flake8

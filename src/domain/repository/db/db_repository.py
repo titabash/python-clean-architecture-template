@@ -1,11 +1,11 @@
 from utilities.logger.logging import log, get_logger
-from gateway.interface.idatabase import IDatabase
+from domain.repository.interface.idatabase import IDatabase
 from infrastructure.db.mongo import Mongo
 
 logger = get_logger()
 
 
-class DbGateway(IDatabase):
+class DbRepository(IDatabase):
     @log(logger)
     def __init__(self, db_name="test", collection_name="testCollection"):
         self.db = Mongo(dbName=db_name, collectionName=collection_name)

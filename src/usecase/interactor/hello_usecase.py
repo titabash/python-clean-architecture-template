@@ -3,8 +3,8 @@ import os
 
 from utilities.logger.logging import log, get_logger
 from usecase.interface.ihello import IHello
-from entity.hello_entity import HelloEntity
-from gateway.db.db_gateway import DbGateway
+from domain.hello_entity import HelloEntity
+from domain.repository.db.db_repository import DbRepository
 
 logger = get_logger()
 
@@ -23,6 +23,6 @@ class Hello(IHello):
 
     @log(logger)
     def find_all(self) -> str:
-        db_gateway = DbGateway()
-        data = db_gateway.find()
+        db_repository = DbRepository()
+        data = db_repository.find()
         return data
